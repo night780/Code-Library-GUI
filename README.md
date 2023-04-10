@@ -10,12 +10,13 @@ Features
 The CodeSnippetLibraryGUI program has three buttons:
 
 ## View: 
-Allows the user to view existing code snippet libraries.
-Create: Allows the user to create a new code snippet library.
-Add: Allows the user to add code snippets from an existing library into another one.
+- Allows the user to view existing code snippet libraries.
+- Create: Allows the user to create a new code snippet library.
+- Add: Allows the user to add code snippets from an existing library into another one.
+- Edit: Allows the user to edit code snippets from an existing library.
+- Delete: Allows the user to delete code snippets from an existing library.
 The buttons have icons associated with them that are displayed on top of them instead of text, making for a more visually appealing GUI.
-Edit: Allows the user to edit code snippets from an existing library.
-Delete: Allows the user to delete code snippets from an existing library.
+
 
 <p align="center">
   <img src="Menu.png" alt="Image description" width="300" height="300">
