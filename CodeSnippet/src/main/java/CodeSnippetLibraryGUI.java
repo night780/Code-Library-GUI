@@ -89,16 +89,7 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
 
 
 
-    /**
-     * The main function of the program.
-     *
-     *
-     * @param String[] args Pass command line arguments to the program
-     *
-     * @return Void
-     *
-     * @docauthor Trelent
-     */
+
     /**
      * The main function of the program.
      *
@@ -132,48 +123,81 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
         }
     }
 
+
     /**
      * The viewExistingLibraries function allows the user to view the contents of a library.
      * The function first checks if there are any libraries in existence, and if not, displays an error message.
-     * If there are libraries in existence, it prompts the user to choose one from a list of options.
-     * Once chosen, it reads that file's contents and displays them in a new window for viewing purposes only (no editing).
-
+     * If there are libraries in existence, it prompts the user to choose one from a list of existing libraries.
+     * Once chosen, it opens up a new window with that library's content displayed inside of it.  It also adds a window listener so that when this new window is closed by clicking on its &quot;X&quot; button or otherwise closing itself out (e.g., via Alt+F4), then the program will prompt you to save changes before
      *
      *
-     * @return The textarea object
+     * @return A string of the file name
      *
      */
     public void viewExistingLibraries() {
-    File root = new File(ROOT_PATH);
-    File[] files = root.listFiles((dir, name) -> name.endsWith(FILE_EXTENSION));
-    JTextArea textArea = null;
-    if (files == null || files.length == 0) {
-        JOptionPane.showMessageDialog(this, "No libraries found.");
-    } else {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Existing libraries:\n");
-        // prompt user to choose a library to view
-        String[] options = new String[files.length];
-        for (int i = 0; i < files.length; i++) {
-            options[i] = files[i].getName();
-        }
-        String libraryName = (String) JOptionPane.showInputDialog(this, sb.toString(), "View Library",
-                JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-        if (libraryName != null && !libraryName.isEmpty()) {
-            String fileContent = CodeSnippetLibrary.getFileContents(libraryName);
-            if (fileContent != null) {
-                JFrame frame = new JFrame("Library Content: " + libraryName);
-                textArea = new JTextArea(fileContent);
-                JScrollPane scrollPane = new JScrollPane(textArea);
-                frame.add(scrollPane);
-                frame.setSize(500, 500);
-                frame.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to read file: " + libraryName + FILE_EXTENSION);
+        File root = new File(ROOT_PATH);
+        File[] files = root.listFiles((dir, name) -> name.endsWith(FILE_EXTENSION));
+        if (files == null || files.length == 0) {
+            JOptionPane.showMessageDialog(this, "No libraries found.");
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Existing libraries:\n");
+            // prompt user to choose a library to view
+            String[] options = new String[files.length];
+            for (int i = 0; i < files.length; i++) {
+                options[i] = files[i].getName();
+            }
+            String libraryName = (String) JOptionPane.showInputDialog(this, sb.toString(), "View Library",
+                    JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            if (libraryName != null && !libraryName.isEmpty()) {
+                String filePath = ROOT_PATH + libraryName;
+                try {
+                    JFrame frame = new JFrame("Library Content: " + libraryName);
+                    JTextArea textArea = new JTextArea();
+                    JScrollPane scrollPane = new JScrollPane(textArea);
+                    frame.add(scrollPane);
+                    frame.setSize(500, 500);
+                    frame.setVisible(true);
+
+                    // load file content into the text area
+                    String fileContent = CodeSnippetLibrary.getFileContents(libraryName);
+                    if (fileContent != null) {
+                        textArea.setText(fileContent);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to read file: " + libraryName + FILE_EXTENSION);
+                    }
+
+                    // add window listener to prompt user to save changes before closing
+                    frame.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            int choice = JOptionPane.showConfirmDialog(frame, "Save changes?", "Save Changes",
+                                    JOptionPane.YES_NO_CANCEL_OPTION);
+                            if (choice == JOptionPane.YES_OPTION) {
+                                String content = textArea.getText();
+                                try (PrintWriter out = new PrintWriter(filePath)) {
+                                    out.println(content);
+                                    JOptionPane.showMessageDialog(frame, "Changes saved successfully.");
+                                } catch (FileNotFoundException ex) {
+                                    JOptionPane.showMessageDialog(frame, "Failed to save changes: " + ex.getMessage());
+                                }
+                            } else if (choice == JOptionPane.NO_OPTION) {
+                                // do nothing
+                            } else {
+                                // user cancelled
+                                return;
+                            }
+                            frame.dispose();
+                        }
+                    });
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Failed to open file: " + libraryName + FILE_EXTENSION);
+                }
             }
         }
     }
-}
+
+
 
 
 
