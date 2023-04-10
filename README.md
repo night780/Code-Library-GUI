@@ -37,7 +37,7 @@ When the user clicks the "Add" button, the addCodeToLibrary function is called, 
 
 ## Notes
 The program assumes that code snippet libraries are stored as .txt files in the same directory as the program.
-The GUI does not yet have editing or deleting features, to format or delete specific code edit the txt file directly.
+The GUI does have editing or deleting features, to format or delete specific code you can from the view section. You will be promted to save the update or not.
 The program is not optimized for large code snippet libraries or multiple users accessing the same libraries simultaneously.
 
 ### Author and Version
