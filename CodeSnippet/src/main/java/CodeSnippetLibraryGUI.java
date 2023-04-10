@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -35,12 +36,18 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
      *
      */
     public CodeSnippetLibraryGUI() {
+
         super("Code Snippet Library");
         setSize(500, 500);
+        //set icon
+        try {
+            setIconImage(ImageIO.read(new File("icon.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 245)); // Use a consistent color scheme throughout the GUI.
-
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(245, 245, 245));
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
