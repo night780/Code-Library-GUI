@@ -46,3 +46,6 @@ The program is not optimized for large code snippet libraries or multiple users 
 
 ### Author and Version
 This program was created by Jacob Jonas and is currently at version 1.0.
+
+### License
+This program is released under the MIT License.
