@@ -10,8 +10,8 @@ import java.io.*;
  * create, view, and add to code snippet libraries.
  *
  * @author Jacob Jonas
- * @version 1.0
- * @date 4-10-23
+ * @version 3.0
+ * @date 4-11-23
  */
 public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
     private static final String ROOT_PATH = "./";
@@ -60,7 +60,7 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
         JLabel logoLabel = new JLabel(logoIcon);
         topPanel.add(logoLabel);
 
-        label = new JLabel("Code Snippet Library Menu");
+        label = new JLabel("Code Snippet Library");
         label.setFont(new Font("Arial", Font.BOLD, 18)); // Increase the font size and use a clear and readable font.
         topPanel.add(label);
 
