@@ -38,7 +38,7 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
     public CodeSnippetLibraryGUI() {
 
 
-        super("Code Snippet Library");
+        super("Snippet Library");
         setSize(500, 500);
         //set icon
         try {
@@ -60,7 +60,7 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
         JLabel logoLabel = new JLabel(logoIcon);
         topPanel.add(logoLabel);
 
-        label = new JLabel("Code Snippet Library");
+        label = new JLabel("Snippet Library");
         label.setFont(new Font("Arial", Font.BOLD, 18)); // Increase the font size and use a clear and readable font.
         topPanel.add(label);
 
