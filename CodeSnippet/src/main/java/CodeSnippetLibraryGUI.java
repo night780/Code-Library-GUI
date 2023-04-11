@@ -37,6 +37,7 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
      */
     public CodeSnippetLibraryGUI() {
 
+
         super("Code Snippet Library");
         setSize(500, 500);
         //set icon
@@ -47,35 +48,41 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
         }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setBackground(new Color(245, 245, 245)); // Use a consistent color scheme throughout the GUI.
+        setBackground(new Color(135, 145, 145)); // Use a consistent color scheme throughout the GUI.
         JPanel topPanel = new JPanel();
-        topPanel.setBackground(new Color(245, 245, 245));
+        topPanel.setBackground(new Color(135, 145, 145));
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        //set background color for bottom panel
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(new Color(135, 145, 145));
 
         ImageIcon logoIcon = new ImageIcon("logo.png"); // Use a title bar image to give the GUI a professional look.
         JLabel logoLabel = new JLabel(logoIcon);
         topPanel.add(logoLabel);
 
-        label = new JLabel("Code Snippet Library Menu:");
+        label = new JLabel("Code Snippet Library Menu");
         label.setFont(new Font("Arial", Font.BOLD, 18)); // Increase the font size and use a clear and readable font.
         topPanel.add(label);
 
         add(topPanel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setBackground(new Color(245, 245, 245));
+        centerPanel.setBackground(new Color(135, 145, 145));
         centerPanel.setLayout(new GridLayout(3, 1, 10, 10));
 
         viewButton = new JButton(new ImageIcon("view.png")); // Use icons or images instead of text for buttons.
         viewButton.setIcon(new ImageIcon(((ImageIcon) viewButton.getIcon()).getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         viewButton.setToolTipText("View existing libraries");
         viewButton.addActionListener(this);
+        viewButton.setBackground(new Color(165, 199, 199, 255));
+
         centerPanel.add(viewButton);
 
         createButton = new JButton(new ImageIcon("create.png"));
         createButton.setIcon(new ImageIcon(((ImageIcon) createButton.getIcon()).getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         createButton.setToolTipText("Create a new library");
         createButton.addActionListener(this);
+        createButton.setBackground(new Color(165, 199, 199, 255));
         centerPanel.add(createButton);
 
         addButton = new JButton(new ImageIcon("add.png"));
@@ -83,12 +90,23 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
         addButton.setIcon(new ImageIcon(((ImageIcon) addButton.getIcon()).getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         addButton.setToolTipText("Add code to a library");
         addButton.addActionListener(this);
+        addButton.setBackground(new Color(165, 199, 199, 255));
+
         centerPanel.add(addButton);
 
         add(centerPanel, BorderLayout.CENTER);
 
-        textArea = new JTextArea();
-        JScrollPane scrollPane = new JScrollPane(textArea);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBackground(new Color(135, 145, 145));
+        //add author name
+        textArea = new JTextArea("Author: Jacob Jonas\nThis program is released under the MIT License\t\tgithub.com/night780");
+        //make the text area bold
+        textArea.setFont(new Font("Arial", Font.BOLD, 10));
+
+        textArea.setEditable(false);
+        textArea.setBackground(new Color(135, 145, 145));
+        scrollPane.setViewportView(textArea);
         add(scrollPane, BorderLayout.SOUTH);
 
         setVisible(true);
@@ -165,7 +183,6 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
                     frame.add(scrollPane);
                     frame.setSize(500, 500);
                     frame.setVisible(true);
-
                     // load file content into the text area
                     String fileContent = CodeSnippetLibrary.getFileContents(libraryName);
                     if (fileContent != null) {
@@ -178,6 +195,11 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
                     frame.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosing(WindowEvent e) {
+                            //if no changes were made, then just close the window
+                            if (textArea.getText().equals(fileContent)) {
+                                frame.dispose();
+                                return;
+                            }
                             int choice = JOptionPane.showConfirmDialog(frame, "Save changes?", "Save Changes",
                                     JOptionPane.YES_NO_CANCEL_OPTION);
                             if (choice == JOptionPane.YES_OPTION) {
@@ -276,10 +298,12 @@ public class CodeSnippetLibraryGUI extends JFrame implements ActionListener {
             return;
         }
 
+        // prompt user to enter code to add to library
         String code = JOptionPane.showInputDialog(mainFrame, "Enter the code to add:", "Add Code to Library", JOptionPane.PLAIN_MESSAGE);
         if (code == null || code.isEmpty()) {
             return;
         }
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < code.length(); i += 58) {
             int endIndex = Math.min(i + 58, code.length());
